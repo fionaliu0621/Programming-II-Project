@@ -1,34 +1,6 @@
-[puzzle_1]
-location=基隆舊郵局
-answer=20584
-hint_1=數字位置
-hint_2=幾分之幾
-hint_3=第一個數字是2
-
-[puzzle_2]
-location=報社舊址
-answer=BEACON
-hint_1=觀察紅書和粉書
-hint_2=數量對應
-hint_3=1=B
-
-[puzzle_3]
-location=基隆燈塔
-answer=WHITE
-hint_1=F=..-. G=--. R=.-.
-hint_2=顏色
-hint_3=字母位置往後移2
-
-[puzzle_4]
-location=白米甕砲台
-answer=25,121
-hint_1=數數
-hint_2=肩並肩
-hint_3=數碰到幾邊
-
-[puzzle_5]
-location=最終站
-answer=CAFE
-hint_1=顏色重組拼單字
-hint_2=
-hint_3=
+# id|location|title|question|answer|hint1|hint2|hint3|max_score
+1|基隆舊郵局|郵局謎題|仔細觀察信封上的資訊，找出隱藏的數字。|20584|數字位置|幾分之幾|第一個數字是2|4
+2|報社舊址|報社謎題|書架上的書號排序有誤，找出隱藏的單字。|BEACON|觀察紅書和粉書|數量對應|1=B|4
+3|基隆燈塔|燈塔謎題|信裡的奇怪符號其實是摩斯密碼，試著解讀它。|WHITE|F=..-. G=--. R=.-.|顏色|字母位置往後移2|4
+4|白米甕砲台|砲台謎題|在陽光照射下，地圖紙有六角形暗紋，數數看。|25,121|數數|肩並肩|數碰到幾邊|4
+5|最終站|書店謎題|將顏色重新組合，拼出一個單字。|CAFE|顏色重組拼單字|共四個顏色|答案是一個場所類型|4
