@@ -1,12 +1,16 @@
 import ctypes
 import os
+import platform
+if platform.system() == 'Windows':
+    _lib_name = 'libtcth_core.dll'
+else:
+    _lib_name = 'libtcth_core.so'
 
-# 載入人B編譯好的 .so
-_lib_path = os.path.join(os.path.dirname(__file__), '..', 'core', 'libtcth_core.so')
+_lib_path = os.path.join(os.path.dirname(__file__), '..', 'core', _lib_name)
 _lib = ctypes.CDLL(_lib_path)
 
 # ── puzzles.txt 路徑 ──────────────────────────────────────────────
-_DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'puzzles.txt')
+_DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'data.txt')
 _SAVE_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'save.bin')
 
 # ── C struct 對應 ─────────────────────────────────────────────────
