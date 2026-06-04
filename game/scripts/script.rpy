@@ -842,7 +842,7 @@ label ending_true_good:
     return
 
 label ending_soft_good:
-    scene dusk_bookstore
+    scene taiping_qingniao_bookstore
     with dissolve
 
     n "你還是把信送到了正確的人手上。"
