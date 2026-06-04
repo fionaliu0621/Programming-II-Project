@@ -1,0 +1,26 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/scripts/script.rpy", line 690: expected statement.
+    "是書店裡的咖啡角落，去太平青鳥書店":
+           ^
+
+File "game/scripts/script.rpy", line 692: expected statement.
+    "是港邊老咖啡館，去海港附近找":
+          ^
+
+File "game/scripts/script.rpy", line 694: expected statement.
+    "是祖父以前常去的茶室，回老街找":
+          ^
+
+File "game/scripts/script.rpy", line 738: expected statement.
+    "去，還來得及":
+       ^
+
+File "game/scripts/script.rpy", line 740: expected statement.
+    "不了，今天就到這裡":
+        ^
+
+Ren'Py Version: Ren'Py 8.5.3.26051504
+Thu Jun  4 15:01:35 2026

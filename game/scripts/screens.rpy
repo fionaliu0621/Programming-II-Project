@@ -190,6 +190,7 @@ style input_prompt:
 style input:
     xalign gui.dialogue_text_xalign
     xmaximum gui.dialogue_width
+    color "#ffffff"
 
 
 ## 選擇畫面 ########################################################################
@@ -482,7 +483,7 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
     textbutton _("返回"):
         style "return_button"
 
-        action Return()
+        action ShowMenu("main_menu")
 
     label title
 
@@ -1002,6 +1003,7 @@ screen help():
             elif device == "gamepad":
                 use gamepad_help
 
+    
 
 screen keyboard_help():
 

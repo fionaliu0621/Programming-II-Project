@@ -1,0 +1,30 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/scripts/script.rpy", line 186, in script
+    $ bridge.save_result(0, 120, 0)
+  File "game/scripts/script.rpy", line 186, in <module>
+    $ bridge.save_result(0, 120, 0)
+      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+TypeError: save_result() takes 2 positional arguments but 3 were given
+
+-- Full Traceback ------------------------------------------------------------
+
+Traceback (most recent call last):
+  File "game/scripts/script.rpy", line 186, in script
+    $ bridge.save_result(0, 120, 0)
+  File "renpy/ast.py", line 1193, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/python.py", line 1276, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "game/scripts/script.rpy", line 186, in <module>
+    $ bridge.save_result(0, 120, 0)
+      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+TypeError: save_result() takes 2 positional arguments but 3 were given
+
+Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39 x86_64
+Ren'Py 8.5.3.26051504
+t1 1.0
+Thu Jun  4 14:46:30 2026

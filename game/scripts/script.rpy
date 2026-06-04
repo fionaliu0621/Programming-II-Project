@@ -11,8 +11,10 @@ init python:
 define n = Character("旁白", color="#1f2b50")
 define p = Character("林宇凡", color="#1f2b50")
 define l = Character("林正雄", color="#000000",)
+define c = Character("郵務員", color="#1f2b50")
 define g = Character("管理員", color="#1f2b50")
 define s = Character("王子騫", color="#1f2b50")
+define k = Character("店員", color="#1f2b50")
 define o = Character("服務生", color="#1f2b50")
 
 # ── 圖片初始化 ─────────────────────────────────────────────────────
@@ -38,6 +40,30 @@ image officer:
     xanchor 0.9
     yanchor 0.9
     xpos 500
+    ypos 1000
+
+image guard:
+    "images/guard.png"
+    zoom 0.9
+    xanchor 0.9
+    yanchor 0.9
+    xpos 650
+    ypos 1000
+
+image waiter:
+    "images/waiter.png"
+    zoom 0.8
+    xanchor 0.8
+    yanchor 0.8
+    xpos 650
+    ypos 1000
+
+image grandson:
+    "images/grandson.png"
+    zoom 0.77
+    xanchor 0.77
+    yanchor 0.77
+    xpos 650
     ypos 1000
 
 image map:
@@ -75,72 +101,27 @@ image q4:
     yanchor 0.55
     xpos 1010
     ypos 400
+    
+image q5:
+    "images/q5.png"
+    zoom 0.55
+    xanchor 0.55
+    yanchor 0.55
+    xpos 1010
+    ypos 400
 
-# ── 謎題輸入畫面 ───────────────────────────────────────────────────
-screen puzzle_input(puzzle_index, elapsed_sec):
-    modal True
+image q6:
+    "images/q6.png"
+    zoom 0.55
+    xanchor 0.55
+    yanchor 0.55
+    xpos 1010
+    ypos 400
 
-    frame:
-        xalign 0.5
-        yalign 0.85
-        xsize 700
-        padding (30, 20)
-
-        vbox:
-            spacing 15
-
-            # 已解鎖的提示
-            python:
-                hints = []
-                for i in range(3):
-                    h = bridge.get_hint(puzzle_index, elapsed_sec, i)
-                    if h:
-                        hints.append(h)
-
-            if hints:
-                text "提示：" color "#aaaaaa" size 22
-                for hint_text in hints:
-                    text "• [hint_text]" color "#cccccc" size 20
-
-            # 輸入框
-            text "請輸入答案：" color "#ffffff" size 24
-            input:
-                id "ans"
-                value ScreenVariableInputValue("user_input")
-                xmaximum 400
-                color "#ffffff"
-                size 24
-
-            # 確認按鈕
-            textbutton "確認":
-                xalign 0.5
-                action Return()
-
-# ── 通用謎題函式 ───────────────────────────────────────────────────
-init python:
-    import time
-
-    def do_puzzle(puzzle_index):
-        """
-        呼叫此函式來處理謎題輸入與驗證。
-        回傳花費秒數。
-        """
-        start = time.time()
-        while True:
-            elapsed = int(time.time() - start)
-            renpy.call_screen("puzzle_input",
-                              puzzle_index=puzzle_index,
-                              elapsed_sec=elapsed)
-            user_input = renpy.get_screen("puzzle_input") and "" or ""
-            # 從 screen variable 取得輸入
-            ans = renpy.python.store._last_ans if hasattr(renpy.python.store, "_last_ans") else ""
-            if bridge.check_answer(puzzle_index, ans):
-                elapsed = int(time.time() - start)
-                bridge.save_result(puzzle_index, elapsed, 0)
-                return elapsed
-            else:
-                renpy.say(None, "答案不對，再試試看。")
-
+default trust = 0
+default keepsake = False
+default puzzle_score = 0
+default final_keyword = ""
 
 # ── 遊戲開始 ───────────────────────────────────────────────────────
 label start:
@@ -194,13 +175,13 @@ label start:
     n "但你知道，這封信不能就這樣留在箱子裡。"
 
     menu:
-        "你決定怎麼做？":
-            "沿著地圖去查個明白":
-                jump post_office
-            "先把信收好，等之後再說":
-                jump delay_bad_end
+        "你決定怎麼做？"
+        "沿著地圖去查個明白":
+            jump post_office
+        "先把信收好，等之後再說":
+            jump delay_bad_end
 
-
+# ── 場景一 郵局 ───────────────────────────────────────────────────────
 label post_office:
 
     scene keelung_post_office
@@ -212,35 +193,63 @@ label post_office:
     show m1
     with dissolve
 
-    n "你站在櫃檯前，手裡捏著那封信，心裡卻像被什麼輕輕推著。"
+    n "你抽了號碼牌，在櫃檯前等著。冷白色的燈光照在地磚上，讓整個空間顯得格外安靜。"
+    n "你手裡捏著那封信，心裡卻像被什麼輕輕推著。"
     p "不好意思……我想查一封很久以前的信。"
 
     show officer
     with dissolve
 
-    n "職員抬頭看了你一眼，沒有多問，只是拿出一張表格，要你先核對信上的資訊。"
-    n "紙張摩擦桌面的聲音，讓整個空間顯得格外安靜。"
+    c "沒有完整資訊很難查。你先對一下這些資料。"
+    n "對方把一張投遞清單推到你面前。上面是一串數字與分數般的標記，看上去像題目，也像祖父刻意留下的第一道門。"
 
     show q1
     with dissolve
 
-    n "你仔細看著投遞清單。那些數字排列得像藏著某種規律。"
+    n "你仔計看著投遞清單。那些數字排列得像藏著某種規律。"
     n "你開始意識到，這不只是單純的地址，而是祖父留下的第一把鑰匙。"
 
     # ── 謎題1 ──
+    $ bridge.start_timer(0)
+    $ _hint_index = 0
+    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
+        $ _elapsed = bridge.get_elapsed(0)
+        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
+            $ _show_hint_prompt = True
+            menu:
+                "已經一分鐘了，需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(0, 999, _hint_index)
+                    if _hint:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    pass
         $ user_input = renpy.input("請輸入答案（提示：觀察數字位置）：", length=20).strip()
         if bridge.check_answer(0, user_input):
             $ _answered = True
-            $ bridge.save_result(0, 120, 0)
+            $ bridge.save_result(0, 0)
         else:
-            n "答案不對，再試試看。"
+            menu:
+                "答案不對！需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(0, 999, _hint_index)
+                    if _hint and _hint_index <= 2:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    $ _show_hint_prompt = False
 
-    n "你終於拼出答案：[user_input]。"
-    n "職員看了結果，淡淡地說，這是舊報社的郵遞區號。"
-    n "如今那裡早已不是報社，而是文化中心。"
+    n "最後，你解出了[user_input]。那是基隆舊報社的郵遞區號，而那個地方如今正是文化中心。"
+    c "以前有些沒有署名的信，最後也只能由撿到的人決定去留。"
+    n "那句話讓你短暫愣住。祖父第一次拿到那封信，正是因為它混在舊家的信堆裡，後來帶來郵局退還，卻被告知自行處置。"
 
     scene old_post_office
     hide m1
@@ -276,7 +285,7 @@ label post_office:
 
     jump newspaper_site
 
-
+# ── 場景二 報社 ───────────────────────────────────────────────────────
 label newspaper_site:
 
     scene bookshelfs
@@ -295,25 +304,53 @@ label newspaper_site:
     show q2
     with dissolve
 
-    n "有些書號排序錯亂，像是有人故意把真正的答案藏了起來。"
+    n "你抽出幾本紅色與粉色書脊的書，紙頁有霉味，像把舊時代的空氣重新翻了出來。"
     p "祖父……你到底在找誰？"
 
     # ── 謎題2 ──
+    $ bridge.start_timer(1)
+    $ _hint_index = 0
+    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
+        $ _elapsed = bridge.get_elapsed(1)
+        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
+            $ _show_hint_prompt = True
+            menu:
+                "已經一分鐘了，需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(1, 999, _hint_index)
+                    if _hint:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    pass
         $ user_input = renpy.input("請輸入答案（提示：觀察紅書和粉書）：", length=20).strip()
         if bridge.check_answer(1, user_input):
             $ _answered = True
-            $ bridge.save_result(1, 120, 0)
+            $ bridge.save_result(1, 0)
         else:
-            n "答案不對，再試試看。"
+            menu:
+                "答案不對！需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(1, 999, _hint_index)
+                    if _hint and _hint_index <= 2:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    $ _show_hint_prompt = False
 
     n "你翻看資料，發現那段年代的基隆港十分繁盛，船隻往來不歇。"
     n "而在港口時代裡，最重要的東西之一，就是燈塔（[user_input]）。"
     n "港邊的人靠它辨識方向，也靠它等一個可能永遠不會回來的人。"
 
     scene old_beach
+    hide filter
     hide m1
     hide bookshelfs
     hide q2
@@ -340,6 +377,7 @@ label newspaper_site:
     l "因為在那個年代裡，有些感情本就不容易被說出口，而越是不說，越會在心裡留下很久很久。"
 
     scene bookshelfs
+    show filter
     show m1
     hide old_beach
     with dissolve
@@ -352,10 +390,11 @@ label newspaper_site:
 
     jump lighthouse
 
-
+# ── 場景三 燈塔 ───────────────────────────────────────────────────────
 label lighthouse:
 
     scene keelung_lighthouse
+    show filter
     with dissolve
 
     n "第三站，基隆燈塔。"
@@ -367,10 +406,13 @@ label lighthouse:
     n "你把信攤開，壓在欄杆上，紙角卻還是被風掀得微微顫動。"
     n "你只好用手再按住一角，指尖能感覺到紙張被海風吹得發冷。"
 
+    show guard
+    with dissolve
+
     g "你也是來找故事的嗎？"
     p "這裡……跟信有關？"
 
-    n "管理員沒有立刻回答，只是看了看你手裡的信，又看了看被風吹得幾乎要翻頁的內頁。"
+    n "管理員沒有立刻回答，只是看了看你手裡地信，又看了看被風吹得幾乎要翻頁的內頁。"
     n "他走近一步，替你把信紙壓平，然後伸手指向內頁的一張小紙條。"
 
     g "你先看這個。別急著讀字，先看它怎麼被藏起來的。"
@@ -379,19 +421,47 @@ label lighthouse:
     with dissolve
 
     n "紙條上寫著奇怪的符號，像摩斯密碼，又像某種只有兩個人知道的暗號。"
+    n "符號旁邊還有幾個被刻意畫下的記號，彷彿在提醒你，真正的答案不只在字裡，也在它被放進信裡的方式。"
 
     # ── 謎題3 ──
+    $ bridge.start_timer(2)
+    $ _hint_index = 0
+    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
+        $ _elapsed = bridge.get_elapsed(2)
+        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
+            $ _show_hint_prompt = True
+            menu:
+                "已經一分鐘了，需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(2, 999, _hint_index)
+                    if _hint:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    pass
         $ user_input = renpy.input("請輸入答案（提示：F=..-. G=--. R=.-.）：", length=20).strip()
         if bridge.check_answer(2, user_input):
             $ _answered = True
-            $ bridge.save_result(2, 120, 0)
+            $ bridge.save_result(2, 0)
         else:
-            n "答案不對，再試試看。"
+            menu:
+                "答案不對！需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(2, 999, _hint_index)
+                    if _hint and _hint_index <= 2:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    $ _show_hint_prompt = False
 
-    n "答案是 [user_input]。"
+    n "答案是 白 [user_input]。"
 
     hide q3
     show map
@@ -403,9 +473,11 @@ label lighthouse:
     g "而他等待的，不只是船。"
 
     show old_beacon
+    hide filter
     hide m1
     hide keelung_lighthouse
     hide q3
+    hide guard
     with dissolve
 
     l "那人是船醫助理，常常要出航遠行。"
@@ -426,10 +498,11 @@ label lighthouse:
 
     jump battlement
 
-
+# ── 場景四 白米甕 ───────────────────────────────────────────────────────
 label battlement:
 
     scene white_cannon_battlement
+    show filter
     with dissolve
 
     n "第四站，白米甕砲台。"
@@ -457,76 +530,188 @@ label battlement:
     n "有些答案不是想出來的，是一點一點看出來的。"
 
     # ── 謎題4 ──
+    $ bridge.start_timer(3)
+    $ _hint_index = 0
+    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
+        $ _elapsed = bridge.get_elapsed(3)
+        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
+            $ _show_hint_prompt = True
+            menu:
+                "已經一分鐘了，需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(3, 999, _hint_index)
+                    if _hint:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    pass
         $ user_input = renpy.input("請輸入答案（提示：數數、肩並肩）：", length=20).strip()
-        if bridge.check_answer(3, user_input):
+        if (bridge.check_answer(3, user_input) or bridge.check_answer(3, user_input.replace(" ", "").replace("，", ",").replace(",", ","))):
             $ _answered = True
-            $ bridge.save_result(3, 120, 0)
+            $ bridge.save_result(3, 0)
         else:
-            n "答案不對，再試試看。"
+            menu:
+                "答案不對！需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(3, 999, _hint_index)
+                    if _hint and _hint_index <= 2:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    $ _show_hint_prompt = False
 
     n "最後，你得出答案：[user_input]。"
     n "接著又解出座標：25° N, 121° E。"
+
+    hide q4
+    with dissolve
 
     n "你站在砲台上，忽然明白這裡是最後的約定地點。"
     n "祖父曾答應要來，卻沒有來。"
     n "信裡的故事，也在這裡停住。"
 
+    show old_cannon
+    hide filter
+    hide m1
+    hide white_cannon_battlement
+    hide q4
+    with dissolve
+
+    l "我們最後一次見面時，他對我說：『我在砲台等你。』"
+    l "那句話我一直記得很清楚，甚至直到很多年後，回想起來仍像是當時才剛說完。"
+    l "我明明答應了他的邀約，心裡也不是沒有想過要去。"
+
+    l "可到了最後，我還是沒有去。"
+    l "有些害怕說不清，也有些害怕一旦真的見了面，自己便再也無法假裝只是普通朋友。"
+    l "我就那樣站在原地，讓那份本該說出口的心意，停在還沒開始的地方。"
+
+    l "那封信，也就此塵封在皮箱。"
+    l "它沒有寄出去，也沒有被我再拿出來看過。"
+    l "像是我替自己留下的一個沉默的證明，提醒我有些話，一旦錯過了時機，就只能跟著歲月一起封存。"
+
+    hide old_cannon
+    show white_cannon_battlement
+    show filter
+    show m1
+    with dissolve
+    
+    n "你的腦海裡慢慢浮出一篇詩，是祖父在你小時候教會你的，但你當時不知道這篇詩是什麼意思。"
     n "你慢慢讀出詩句，像是替祖父把那句沒說出口的話念完。"
-    n "\"海風吹信筆封涼，燈塔盼人夜未央。一步錯身終不語，殘章無寄夢偏長。\""
+    n "海風吹信筆封涼，燈塔盼人夜未央。一步錯身終不語，殘章無寄夢偏長。"
 
     n "這一刻，你終於明白，這不是一場單純的尋寶。"
     n "這是一段被錯過的愛。"
 
     menu:
-        "你要怎麼面對最後的線索？":
-            "立刻去查最終地點":
-                jump final_route
-            "先回家整理資料":
-                jump delay_bad_end
+        "你要怎麼面對最後的線索？"
+        "立刻去查最終地點":
+            scene black
+            with dissolve
+            jump final_route
+        "先回家整理資料":
+            scene black
+            with dissolve
+            jump delay_bad_end
 
 
 label final_route:
 
-    scene desk_night
+    scene old_house_room
+    show m1
     with dissolve
 
-    n "你回到家，翻查舊報、地圖與舊照片。"
+    n "你回家後翻查舊報，果然找到關於颱風的紀錄：祖父沒赴約的那一天，對方的船其實也因風雨沒有啟航。那不是永別，而是另一種更漫長的錯過。"
+    n "你大喜過望，繼續追查，發現那人後來定居基隆，甚至留下了後代。"
+    n "就在你以為線索快要斷掉時，你在舊照片與報紙之間，發現了一張被壓在最底下的紙條。"
+
+    show q5
+    with dissolve
 
     # ── 謎題5 ──
+    $ bridge.start_timer(4)
+    $ _hint_index = 0
+    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
+        $ _elapsed = bridge.get_elapsed(4)
+        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
+            $ _show_hint_prompt = True
+            menu:
+                "已經一分鐘了，需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(4, 999, _hint_index)
+                    if _hint:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    pass
         $ user_input = renpy.input("請輸入答案（提示：顏色重組拼單字）：", length=20).strip()
         if bridge.check_answer(4, user_input):
             $ _answered = True
-            $ bridge.save_result(4, 120, 0)
+            $ bridge.save_result(4, 0)
         else:
-            n "答案不對，再試試看。"
+            menu:
+                "答案不對！需要提示嗎？"
+                "給我提示":
+                    $ _hint = bridge.get_hint(4, 999, _hint_index)
+                    if _hint and _hint_index <= 2:
+                        n "[_hint]"
+                        $ _hint_index = _hint_index + 1
+                    else:
+                        n "目前還沒有更多提示了。"
+                "我再想想":
+                    $ _show_hint_prompt = False
 
     n "終於，你發現那個最終線索不是普通店名，而是藏在記憶中的一個字：[user_input]。"
     n "你查到那人後來定居基隆，而他的後代，至今仍住在這片土地上。"
     n "你握緊信紙，知道自己還有最後一次機會。"
 
     scene taiping_qingniao_bookstore
+    show filter
     with dissolve
 
     n "最終站，太平青鳥書店。"
+
+    show m1
+    with dissolve
+
     n "你推開門時，鈴鐺聲清脆地響了一下。"
     n "書香混著木頭與咖啡的味道，讓人不自覺放慢呼吸。"
+
+    show waiter
+    with dissolve
 
     o "……你找誰？"
     p "我想找一位，和我祖父在很久以前認識的人。"
 
-    n "你遞出那封信，也遞出那張舊照片。"
-    n "男子起初還有些疑惑，直到他看見照片背面的字跡。"
-    n "他的眼神，慢慢變了。"
+    n "你把信和那張舊照片一併遞了過去。"
+    n "剛好店裡只有一位顧客，服務生把照片傳給那位客人看。"
+
+    hide waiter
+    show grandson
+    with dissolve
+    
+    n "男子原本只是禮貌地接下，目光卻在碰到照片的一瞬間停住了。"
+    n "他沒有立刻說話，只是低頭看著那張照片，像是在辨認某個早就被時間磨淡的輪廓。"
+
+    n "過了好一會兒，他才伸手翻到背面。"
+    n "當他看見那熟悉的字跡時，神情微微一震。"
+    n "那不是驚訝得很劇烈的反應，而是一種被記憶輕輕碰到之後，慢慢浮上來的沉默。"
 
     s "……這張照片，我家裡也有一張。"
 
-    n "他安靜很久，最後低頭輕輕笑了。"
+    n "他安靜了很久，像是在把心裡某個模糊的地方，重新對上眼前的影子。"
+    n "最後，他低頭輕輕笑了。"
     n "那笑容裡沒有驚訝，只有某種終於被接上的理解。"
 
     s "原來……他一直沒有忘記。"
@@ -538,12 +723,27 @@ label final_route:
     $ total = bridge.get_total_score()
     n "你完成了所有謎題，總分：[total] 分。"
 
-    jump good_end
+    menu:
+        "你如何理解 CAFE？"
+        "是書店裡的咖啡角落，去太平青鳥書店":
+            $ final_keyword = "bookstore"
+        "是港邊老咖啡館，去海港附近找":
+            $ final_keyword = "harbor"
+        "是祖父以前常去的茶室，回老街找":
+            $ final_keyword = "teahouse"
+
+    if final_keyword == "bookstore":
+        jump final_bookstore
+    elif final_keyword == "harbor":
+        jump final_harbor
+    else:
+        jump final_teahouse
 
 
 label good_end:
 
     scene sunset_sea
+    show m1
     with dissolve
 
     n "好結局。"
@@ -562,12 +762,168 @@ label delay_bad_end:
     n "你告訴自己，等一下再去也沒關係。"
     n "可是有些事，一旦晚了，就不會再等人。"
 
-    n "當你終於再回到線索所在的地方時，門已經關了。"
+    n "當你終於再回到線索所在的地方時，店已經停業了。"
     n "人不在，照片不在，唯一留下的只有風。"
 
     n "你手裡還握著那封信，卻再也找不到能親手接住它的人。"
 
     n "壞結局。"
     n "你解開了謎題，卻錯過了真正重要的相遇。"
+
+    return
+
+# ── 擴充結局 ───────────────────────────────────────────────────────
+
+label final_bookstore:
+    scene taiping_qingniao_bookstore
+    with dissolve
+
+    n "你來到太平青鳥書店。推門時風鈴輕響，書香與木頭味混著淡淡咖啡香，安靜得像任何一句真話都能在這裡被好好接住。"
+    if keepsake:
+        n "你把那張舊照片一起帶來了。某種直覺告訴你，今天也許不只是一封信的終點。"
+    k "歡迎。請問需要幫忙嗎？"
+    p "我在找……一個和很久以前的基隆有關的人。"
+    n "櫃檯後的男子抬起頭，起初只覺得你問得奇怪。直到你把照片遞過去，他的眼神忽然停住。"
+
+    if keepsake:
+        s "這張照片……我家牆上也有一張。"
+        $ trust += 2
+    else:
+        s "這封信上的名字，我好像聽祖父提過。"
+        $ trust += 1
+
+    n "你把整個故事慢慢說完，把那封未寄出的信交到他手中。男子沉默了很久，最後露出一個像是終於明白什麼的笑。" 
+
+    if puzzle_score >= 4 and trust >= 4:
+        jump ending_true_good
+    else:
+        jump ending_soft_good
+
+label final_harbor:
+    scene old_harbor_cafe
+    with dissolve
+    n "你去了港邊一間老咖啡館。窗邊能看見船影，桌椅老舊，牆上掛著泛黃船照。這裡很像故事會停留的地方，卻沒有任何人認得你手上的名字。"
+    n "店主聽完後只說，這附近以前的確有很多等船的人，但太久了，太多人都散了。"
+    if trust >= 3:
+        n "臨走前，店主忽然想起有人也許知道更多，提到山上的書店曾收過不少地方口述資料。你意識到自己差一點走錯方向。"
+        menu:
+            "要不要立刻改去書店？"
+            "去，還來得及":
+                jump final_bookstore
+            "不了，今天就到這裡":
+                jump ending_missed
+    else:
+        jump ending_missed
+
+label final_teahouse:
+    scene old_street_teahouse
+    with dissolve
+    n "你回到老街尋找祖父可能去過的茶室。舊街潮濕、招牌斑駁，午後的光照不進狹窄騎樓。你找到一間還在營業的老店，卻只在角落裡看見與祖父相似的時代殘影。"
+    n "你把信攤在桌上，看著茶湯表面慢慢晃動，忽然明白自己追到的只是祖父熟悉的地方，不是那封信真正要去的地方。"
+    jump ending_wrong_place
+
+label ending_true_good:
+    scene sunset_sea
+    with dissolve
+
+    n "男子把信接過去時，手指明顯停了一下，像是連他自己也沒有想到，這封信竟會隔著這麼多年，仍然來到他的面前。"
+    n "他低頭看完信，眼眶微微泛紅，卻始終沒有落淚，只是在沉默很久之後，輕聲說道：『原來……他一直沒有忘記。』"
+    n "那一刻，你忽然覺得，祖父藏了一生、沒能親手送出的心意，終於在你手上，真正抵達了該去的地方。"
+
+    n "男子轉身回到書架後方，過了一會兒，拿出一張已經有些泛黃的舊照片。"
+    n "照片裡的兩個人，站在港邊，隔著歲月仍能看見年輕時不敢說破的情意。"
+    n "你知道，這不只是你替祖父完成了一次傳達，也是兩段被時間分開的記憶，終於在今日重新接上。"
+
+    n "離開書店時，天色正好。山城的風從街口慢慢吹下來，帶著一點海的氣味。"
+    n "你回頭望向遠處的港口，忽然明白，有些故事不是為了被改寫，而是為了在多年以後，仍能被好好理解。"
+    n "而那些未曾寄出的思念，也終於有人替它走完最後一程。"
+    n "真結局【由你傳達】。"
+
+    return
+
+label ending_soft_good:
+    scene dusk_bookstore
+    with dissolve
+
+    n "你還是把信送到了正確的人手上。"
+    n "男子接過信時，神情有些恍惚，像是聽見了一段自己從未真正知道、卻又隱約熟悉的往事。"
+
+    n "他沒有立刻把話說得很滿，只是將信小心收好，低聲說自己會回去把家裡那張舊照片找出來。"
+    n "你知道，雖然你沒有拼齊所有細節，沒能把祖父和那人之間的每一段經過都完整說清，但至少這封信，終究沒有再被埋進沉默裡。"
+
+    n "走出書店時，天色已經有些暗了。玻璃門映著街燈，也映著你手裡空下來的位置。"
+    n "你忽然覺得，也許有些故事不必知道全部，才能被溫柔地保存。"
+    n "只要它終究被送到了願意接住的人手裡，那份遲來的回音，就已經足夠。"
+    n "好結局【遲來的回音】。"
+
+    return
+
+label ending_missed:
+    scene harbor_evening
+    with dissolve
+    
+    n "你離開港邊時，海風很大，吹得外套下襬不住晃動。"
+    n "咖啡館裡沒有你要找的人，窗邊只剩幾張空桌，和幾個被黃昏拉長的影子。"
+
+    n "你本以為自己已經追到最後一步，卻在回頭查證時才知道，那個真正能收下這封信的人，其實一直都在山上的那間書店裡。"
+    n "不是線索騙了你，而是你在最後關頭，把答案理解成了另一個更像回憶、卻不是真相的方向。"
+
+    n "你站在港邊，望著遠處逐漸暗下去的海面，忽然想起祖父沒有赴約的那一天。"
+    n "原來有些錯過並不轟烈，它只是安安靜靜地發生在你以為『差不多了』的那一刻。"
+    n "你不是沒有走到最後，只是在最後一步，和答案錯身而過。"
+    n "壞結局【擦身而過】。"
+
+    return
+
+label ending_wrong_place:
+    scene empty_teacup
+    with dissolve
+
+    n "你到了那間充滿回憶的老茶室。"
+    n "斑駁的木桌、溫吞的茶香、牆面泛黃的痕跡，一切都像極了祖父可能停留過的年代。"
+
+    n "你坐了很久，甚至一度以為自己找對了地方。"
+    n "可時間一點一點過去，始終沒有人認得信上的名字，也沒有人能把這封信接過去。"
+    n "你這才明白，你找到的是一個很像故事會停留的地方，卻不是這封信真正該抵達的地方。"
+
+    n "茶早已放涼，信卻還在你手裡。"
+    n "那一刻你忽然懂了，思念並不是只要有個地方安放就夠了。"
+    n "它真正想去的，是某一個人，是某一雙願意看完它、理解它、接住它的手。"
+    n "而你終究沒能替祖父，把信送到正確的地址。"
+    n "壞結局【寄不到的地址】。"
+
+    return
+
+label ending_half_truth:
+    scene home_night
+    with dissolve
+
+    n "你已經知道祖父曾錯過一場重要的赴約，也知道那封信為什麼沒有寄出。"
+    n "白米甕砲台上的風、燈塔邊的等待、港邊沒能說出口的情意，到了這裡，似乎已經足夠拼湊成一個完整的遺憾。"
+
+    n "可是你沒有再繼續走下去。"
+    n "你沒有去確認那人後來的人生，也沒有找到那封信最後該交給誰。"
+    n "於是這段故事對你而言，永遠只停在『差一點知道全部』的地方。"
+
+    n "夜裡，你把信重新收回桌上，房間安靜得只剩翻頁聲。"
+    n "你明白，有些真相不是不存在，而是需要有人願意再往前一步。"
+    n "而這一次，你停住了。"
+    n "結局【停在這裡】。"
+
+    return
+
+label ending_box:
+    scene old_house_room
+    with dissolve
+
+    n "你把皮箱重新扣上，金屬扣環發出一聲很輕的聲響，像是某段故事又一次被關回了時間裡。"
+    n "灰塵慢慢落回箱面，房間也重新安靜下來，彷彿你從來沒有打開過它。"
+
+    n "那封寫於 1960 年的信仍然躺在裡面，紙頁泛黃、邊角脆弱，像一段始終沒能說出口的話。"
+    n "祖父沒有寄出的心意，到了你這裡，依舊沒有被傳達。"
+
+    n "有些故事會因為被發現而重新活過來。"
+    n "可也有些故事，若沒有人願意把它讀完，它就只能繼續沉在箱底，與歲月一同老去。"
+    n "早期結局【箱底】。"
 
     return
