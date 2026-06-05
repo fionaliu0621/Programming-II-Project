@@ -176,7 +176,11 @@ def save_result(puzzle_index: int, hints_shown: int):
     _lib.save_set_puzzle(
         ctypes.byref(_save),
         puzzle_id, solved, score, elapsed, hints_shown)
-    _save.total_score   += score
+    
+    _save.total_score = sum(
+        _save.puzzles[i].score 
+        for i in range(_save.puzzle_count)
+    )
     _save.total_elapsed += elapsed
     _save.current_puzzle = puzzle_id + 1
     _lib.save_write(_SAVE_PATH.encode(), ctypes.byref(_save))

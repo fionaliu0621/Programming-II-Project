@@ -483,7 +483,8 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
     textbutton _("返回"):
         style "return_button"
 
-        action ShowMenu("main_menu")
+        action Return()
+        sensitive not main_menu
 
     label title
 

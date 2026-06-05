@@ -770,7 +770,13 @@ label delay_bad_end:
     n "壞結局。"
     n "你解開了謎題，卻錯過了真正重要的相遇。"
 
-    return
+    menu:
+        "要重新開始嗎？"
+        "重新開始":
+            jump start
+        "結束遊戲":
+            return
+
 
 # ── 擴充結局 ───────────────────────────────────────────────────────
 
@@ -873,7 +879,13 @@ label ending_missed:
     n "你不是沒有走到最後，只是在最後一步，和答案錯身而過。"
     n "壞結局【擦身而過】。"
 
-    return
+    menu:
+        "要重新開始嗎？"
+        "重新開始":
+            jump start
+        "結束遊戲":
+            return
+
 
 label ending_wrong_place:
     scene empty_teacup
@@ -892,7 +904,13 @@ label ending_wrong_place:
     n "而你終究沒能替祖父，把信送到正確的地址。"
     n "壞結局【寄不到的地址】。"
 
-    return
+    menu:
+        "要重新開始嗎？"
+        "重新開始":
+            jump start
+        "結束遊戲":
+            return
+
 
 label ending_half_truth:
     scene home_night
@@ -910,7 +928,13 @@ label ending_half_truth:
     n "而這一次，你停住了。"
     n "結局【停在這裡】。"
 
-    return
+    menu:
+        "要重新開始嗎？"
+        "重新開始":
+            jump start
+        "結束遊戲":
+            return
+
 
 label ending_box:
     scene old_house_room
@@ -926,4 +950,9 @@ label ending_box:
     n "可也有些故事，若沒有人願意把它讀完，它就只能繼續沉在箱底，與歲月一同老去。"
     n "早期結局【箱底】。"
 
-    return
+    menu:
+        "要重新開始嗎？"
+        "重新開始":
+            jump start
+        "結束遊戲":
+            return
