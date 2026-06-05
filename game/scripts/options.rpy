@@ -48,14 +48,13 @@ define config.has_voice = True
 ## 要允許使用者在聲音或語音通道上播放測試聲音，請取消註釋下面的行並使用它來設定
 ## 要播放的範例聲音。
 
-# define config.sample_sound = "sample-sound.ogg"
-# define config.sample_voice = "sample-voice.ogg"
+define config.sample_sound = "audio/success.ogg"
 
 
 ## 取消註解以下行以設定玩家在主選單時播放的音訊檔案。該檔案將繼續在遊戲中播放，
 ## 直到停止或播放另一個檔案。
 
-# define config.main_menu_music = "main-menu-theme.ogg"
+define config.main_menu_music = "audio/start.mp3"
 
 
 ## 過渡 ##########################################################################

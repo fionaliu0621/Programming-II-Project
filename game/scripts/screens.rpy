@@ -12,6 +12,7 @@ init offset = -1
 style default:
     properties gui.text_properties()
     language gui.language
+    activate_sound "audio/button.ogg"
 
 style input:
     properties gui.text_properties("input", accent=True)
@@ -75,7 +76,9 @@ style frame:
     padding gui.frame_borders.padding
     background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
 
-
+style button:
+    properties gui.button_properties("button")
+    activate_sound "audio/button.ogg"
 
 ################################################################################
 ## 遊戲內畫面
@@ -106,6 +109,8 @@ screen say(who, what):
 
         text what id "what"
 
+    key "game_menu" action [ Play("sound", "audio/button.ogg"), ShowMenu("game_menu") ]
+
 
     ## 如果有側面影像，請將其顯示在文字上方。不要顯示在手機版本上 - 沒有空間。
     if not renpy.variant("small"):
@@ -132,6 +137,7 @@ style window:
     ysize gui.textbox_height
 
     background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
+    activate_sound "audio/button.ogg"
 
 style namebox:
     xpos gui.name_xpos
