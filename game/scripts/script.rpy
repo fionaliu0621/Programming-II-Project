@@ -241,6 +241,7 @@ label post_office:
             $ _answered = True
             $ bridge.save_result(0, 0)
         else:
+            play sound "audio/wrong.ogg"
             menu:
                 "答案不對！需要提示嗎？"
                 "給我提示":
@@ -344,6 +345,7 @@ label newspaper_site:
             $ _answered = True
             $ bridge.save_result(1, 0)
         else:
+            play sound "audio/wrong.ogg"
             menu:
                 "答案不對！需要提示嗎？"
                 "給我提示":
@@ -464,6 +466,7 @@ label lighthouse:
             $ _answered = True
             $ bridge.save_result(2, 0)
         else:
+            play sound "audio/wrong.ogg"
             menu:
                 "答案不對！需要提示嗎？"
                 "給我提示":
@@ -577,6 +580,7 @@ label battlement:
             $ _answered = True
             $ bridge.save_result(3, 0)
         else:
+            play sound "audio/wrong.ogg"
             menu:
                 "答案不對！需要提示嗎？"
                 "給我提示":
@@ -687,6 +691,7 @@ label final_route:
             $ _answered = True
             $ bridge.save_result(4, 0)
         else:
+            play sound "audio/wrong.ogg"
             menu:
                 "答案不對！需要提示嗎？"
                 "給我提示":

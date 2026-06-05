@@ -187,3 +187,11 @@ init python:
 ## 與 itch.io 專案關聯的使用者名稱和專案名稱，以斜線分隔。
 
 # define build.itch_project = "renpytom/test-project"
+
+init -1 python:
+    def _play_click():
+        renpy.sound.play("audio/button.ogg", channel="sound")
+    
+    config.underlay = [
+        renpy.Keymap(mouseup_1=_play_click),
+    ]

@@ -80,6 +80,10 @@ style button:
     properties gui.button_properties("button")
     activate_sound "audio/button.ogg"
 
+screen click_sound_screen():
+    zorder 99
+    key "mouseup_1" action Function(_play_click)
+
 ################################################################################
 ## 遊戲內畫面
 ################################################################################
@@ -192,6 +196,7 @@ style input_prompt is default
 style input_prompt:
     xalign gui.dialogue_text_xalign
     properties gui.text_properties("input_prompt")
+    color "#FFFFFF"
 
 style input:
     xalign gui.dialogue_text_xalign

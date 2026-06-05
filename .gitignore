@@ -3,3 +3,9 @@ bridge/__pycache__/
 game/cache/
 *.rpyc
 log.txt
+# Ignore local save data
+data/save.bin
+
+# Ignore log and debug files
+errors.txt
+traceback.txt
