@@ -128,6 +128,7 @@ label start:
 
     scene black
     with fade
+    play music "audio/now.mp3" fadein 1.0
 
     n "祖父林正雄過世後的第三天，你回到久未整理的老家。"
     n "房間裡還留著舊木櫃的氣味，午後的光從半掩的窗簾縫隙斜斜落下，照亮空氣裡漂浮的灰塵。"
@@ -140,6 +141,7 @@ label start:
     n "皮箱的皮面已經裂開，金屬扣環微微生鏽，像是很久很久以前，就沒有人再碰過它。"
 
     p "……這是什麼？"
+    play sound "audio/zipper.ogg" 
 
     hide m1
     show envolope:
@@ -152,6 +154,7 @@ label start:
 
     hide envolope
     show envolope1
+    play sound "audio/envelope.ogg"
     with dissolve
 
     n "你抽出信紙，紙張薄得像會在手中碎掉。"
@@ -161,6 +164,7 @@ label start:
     hide envolope1
     show map:
         xpos 100
+    play sound "audio/envelope.ogg"
     with dissolve
 
     n "地圖上標了四個地點。"
@@ -169,6 +173,7 @@ label start:
 
     show m1
     with dissolve
+    play sound "audio/envelope.ogg"
     p "這些地方……祖父去過嗎？"
 
     n "你不知道。"
@@ -204,6 +209,7 @@ label post_office:
     n "對方把一張投遞清單推到你面前。上面是一串數字與分數般的標記，看上去像題目，也像祖父刻意留下的第一道門。"
 
     show q1
+    play sound "audio/paper.ogg"
     with dissolve
 
     n "你仔計看著投遞清單。那些數字排列得像藏著某種規律。"
@@ -246,12 +252,15 @@ label post_office:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     $ _show_hint_prompt = False
-
+    
+    play sound "audio/success.ogg"
+            
     n "最後，你解出了[user_input]。那是基隆舊報社的郵遞區號，而那個地方如今正是文化中心。"
     c "以前有些沒有署名的信，最後也只能由撿到的人決定去留。"
     n "那句話讓你短暫愣住。祖父第一次拿到那封信，正是因為它混在舊家的信堆裡，後來帶來郵局退還，卻被告知自行處置。"
 
     scene old_post_office
+    play music "audio/past.mp3" fadein 1.0
     hide m1
     hide officer
     hide keelung_post_office
@@ -272,6 +281,7 @@ label post_office:
     l "我讀著讀著，竟一時忘了時間，只覺得若不去找出寫信的人，心裡總會留著一個缺口。"
 
     scene keelung_post_office
+    play music "audio/now.mp3" fadein 1.0
     show m1
     hide old_post_office
     with dissolve
@@ -302,6 +312,7 @@ label newspaper_site:
     n "你在一排書架前停下。"
 
     show q2
+    play sound "audio/paper.ogg"
     with dissolve
 
     n "你抽出幾本紅色與粉色書脊的書，紙頁有霉味，像把舊時代的空氣重新翻了出來。"
@@ -344,12 +355,15 @@ label newspaper_site:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     $ _show_hint_prompt = False
-
+    
+    play sound "audio/success.ogg"
+             
     n "你翻看資料，發現那段年代的基隆港十分繁盛，船隻往來不歇。"
     n "而在港口時代裡，最重要的東西之一，就是燈塔（[user_input]）。"
     n "港邊的人靠它辨識方向，也靠它等一個可能永遠不會回來的人。"
 
     scene old_beach
+    play music "audio/past.mp3" fadein 1.0
     hide filter
     hide m1
     hide bookshelfs
@@ -377,6 +391,7 @@ label newspaper_site:
     l "因為在那個年代裡，有些感情本就不容易被說出口，而越是不說，越會在心裡留下很久很久。"
 
     scene bookshelfs
+    play music "audio/now.mp3" fadein 1.0
     show filter
     show m1
     hide old_beach
@@ -459,11 +474,14 @@ label lighthouse:
                     else:
                         n "目前還沒有更多提示了。"
                 "我再想想":
-                    $ _show_hint_prompt = False
-
+                    $ _show_hint_prompt = False 
+            
+    play sound "audio/success.ogg"
+            
     n "答案是 白 [user_input]。"
 
     hide q3
+    play sound "audio/paper.ogg"
     show map
     with dissolve
 
@@ -473,6 +491,7 @@ label lighthouse:
     g "而他等待的，不只是船。"
 
     show old_beacon
+    play music "audio/past.mp3" fadein 1.0
     hide filter
     hide m1
     hide keelung_lighthouse
@@ -502,6 +521,7 @@ label lighthouse:
 label battlement:
 
     scene white_cannon_battlement
+    play music "audio/now.mp3" fadein 1.0
     show filter
     with dissolve
 
@@ -514,6 +534,7 @@ label battlement:
     n "海面在遠方泛著白光，和天空幾乎連成一片，讓人一時分不清自己到底是站在山上，還是站在海邊。"
 
     show map
+    play sound "audio/paper.ogg"
     with dissolve
 
     n "你停下來喘了口氣，低頭看著手裡那張已經被折得發軟的地圖。"
@@ -522,6 +543,7 @@ label battlement:
 
     hide map
     show q4
+    play sound "audio/paper.ogg"
     with dissolve
 
     n "你怔了一下，立刻把紙張拿近一些，試著從圖案、數字、邊角去找規律。"
@@ -566,7 +588,9 @@ label battlement:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     $ _show_hint_prompt = False
-
+            
+    play sound "audio/success.ogg"
+            
     n "最後，你得出答案：[user_input]。"
     n "接著又解出座標：25° N, 121° E。"
 
@@ -578,6 +602,7 @@ label battlement:
     n "信裡的故事，也在這裡停住。"
 
     show old_cannon
+    play music "audio/past.mp3" fadein 1.0
     hide filter
     hide m1
     hide white_cannon_battlement
@@ -598,6 +623,7 @@ label battlement:
 
     hide old_cannon
     show white_cannon_battlement
+    play music "audio/now.mp3" fadein 1.0
     show filter
     show m1
     with dissolve
@@ -632,6 +658,7 @@ label final_route:
     n "就在你以為線索快要斷掉時，你在舊照片與報紙之間，發現了一張被壓在最底下的紙條。"
 
     show q5
+    play sound "audio/paper.ogg"
     with dissolve
 
     # ── 謎題5 ──
@@ -671,7 +698,9 @@ label final_route:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     $ _show_hint_prompt = False
-
+            
+    play sound "audio/success.ogg"
+            
     n "終於，你發現那個最終線索不是普通店名，而是藏在記憶中的一個字：[user_input]。"
     n "你查到那人後來定居基隆，而他的後代，至今仍住在這片土地上。"
     n "你握緊信紙，知道自己還有最後一次機會。"
@@ -681,7 +710,8 @@ label final_route:
     with dissolve
 
     n "最終站，太平青鳥書店。"
-
+    play sound "audio/door.ogg"
+            
     show m1
     with dissolve
 
@@ -743,6 +773,7 @@ label final_route:
 label good_end:
 
     scene sunset_sea
+    play music "audio/good.mp3" fadein 1.0
     show m1
     with dissolve
 
@@ -754,7 +785,7 @@ label good_end:
 
 
 label delay_bad_end:
-
+    play music "audio/bad.mp3" fadein 1.0
     scene empty_station
     with dissolve
 
@@ -829,6 +860,7 @@ label final_teahouse:
     jump ending_wrong_place
 
 label ending_true_good:
+    play music "audio/good.mp3" fadein 1.0
     scene sunset_sea
     with dissolve
 
@@ -849,6 +881,7 @@ label ending_true_good:
 
 label ending_soft_good:
     scene taiping_qingniao_bookstore
+    play music "audio/good.mp3" fadein 1.0
     with dissolve
 
     n "你還是把信送到了正確的人手上。"
@@ -865,6 +898,7 @@ label ending_soft_good:
     return
 
 label ending_missed:
+    play music "audio/bad.mp3" fadein 1.0
     scene harbor_evening
     with dissolve
     
@@ -888,6 +922,7 @@ label ending_missed:
 
 
 label ending_wrong_place:
+    play music "audio/bad.mp3" fadein 1.0
     scene empty_teacup
     with dissolve
 
@@ -913,6 +948,7 @@ label ending_wrong_place:
 
 
 label ending_half_truth:
+    play music "audio/bad.mp3" fadein 1.0
     scene home_night
     with dissolve
 
@@ -937,6 +973,7 @@ label ending_half_truth:
 
 
 label ending_box:
+    play music "audio/bad.mp3" fadein 1.0
     scene old_house_room
     with dissolve
 
