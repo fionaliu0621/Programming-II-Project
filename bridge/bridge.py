@@ -2,7 +2,16 @@ import ctypes
 import os
 
 # 載入人B編譯好的 .so
-_lib_path = os.path.join(os.path.dirname(__file__), '..', 'core', 'libtcth_core.dll')
+import sys
+
+if sys.platform == "win32":
+    _lib_name = "libtcth_core.dll"
+elif sys.platform == "darwin":
+    _lib_name = "libtcth_core.dylib"
+else:
+    _lib_name = "libtcth_core.so"
+
+_lib_path = os.path.join(os.path.dirname(__file__), '..', 'core', _lib_name)
 _lib = ctypes.CDLL(_lib_path)
 
 # ── 路徑 ──────────────────────────────────────────────────────────
