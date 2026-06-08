@@ -11,3 +11,7 @@ errors.txt
 traceback.txt
 *.o
 libtcth_core.*
+*.o
+*.so
+*.dll
+*.dylib
