@@ -10,7 +10,7 @@
 ##
 ## 字串周圍的 _() 標記其為符合翻譯條件。
 
-define config.name = _("t1")
+define config.name = _("The Last Unsent Letter")
 
 
 ## 決定上面給出的標題是否顯示在主選單畫面上。將其設為 False 以隱藏標題。
@@ -32,7 +32,7 @@ define gui.about = _p("""
 ## 遊戲的短名稱，用於建立發行版中的可執行檔和目錄。它必須只是 ASCII，並且不能包
 ## 含空格、冒號或分號。
 
-define build.name = "t1"
+define build.name = "The Last Unsent Letter"
 
 
 ## 聲音和音樂 #######################################################################

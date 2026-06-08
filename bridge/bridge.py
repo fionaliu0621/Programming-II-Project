@@ -2,7 +2,7 @@ import ctypes
 import os
 
 # 載入人B編譯好的 .so
-_lib_path = os.path.join(os.path.dirname(__file__), '..', 'core', 'libtcth_core.so')
+_lib_path = os.path.join(os.path.dirname(__file__), '..', 'core', 'libtcth_core.dll')
 _lib = ctypes.CDLL(_lib_path)
 
 # ── 路徑 ──────────────────────────────────────────────────────────

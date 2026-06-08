@@ -8,7 +8,6 @@ init offset = -1
 ################################################################################
 ## 樣式
 ################################################################################
-
 style default:
     properties gui.text_properties()
     language gui.language
@@ -133,15 +132,29 @@ style say_thought is say_dialogue
 style namebox is default
 style namebox_label is say_label
 
-
 style window:
-    xalign 0.5
+    xalign 0.0
     xfill True
     yalign gui.textbox_yalign
     ysize gui.textbox_height
 
-    background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
-    activate_sound "audio/button.ogg"
+    # background Image("gui/textbox.png", xalign=0.5, yalign=1.0) # 
+    background Frame(textualBox, 0, 0) 
+
+
+default theBox = "gui/textbox.png" ## 新圖片（嗯，差不多），預設的框框可以隨你改
+define textualBox = "[theBox]" # 我們要定義一張圖片（定義不能改，但圖片可以，所以我們稍微耍點小聰明）
+
+# style window:
+#     xalign 0.5
+#     xfill True
+#     yalign gui.textbox_yalign
+#     ysize gui.textbox_height
+
+#     background Image(theBox, xalign=0.5, yalign=1.0)
+#     activate_sound "audio/button.ogg"
+
+# default theBox = "gui/textbox.png"
 
 style namebox:
     xpos gui.name_xpos

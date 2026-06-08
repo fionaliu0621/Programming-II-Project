@@ -10,13 +10,12 @@ init python:
 # ── 角色定義 ───────────────────────────────────────────────────────
 define n = Character("旁白", color="#1f2b50")
 define p = Character("林宇凡", color="#1f2b50")
-define l = Character("林正雄", color="#000000",)
+define l = Character("林正雄", color="#000000")
 define c = Character("郵務員", color="#1f2b50")
 define g = Character("管理員", color="#1f2b50")
 define s = Character("王子騫", color="#1f2b50")
 define k = Character("店員", color="#1f2b50")
 define o = Character("服務生", color="#1f2b50")
-
 # ── 圖片初始化 ─────────────────────────────────────────────────────
 image old_house_room:
     "images/old_house_room.png"
@@ -70,6 +69,14 @@ image map:
     "images/map.png"
     xpos 1050
 
+image old_photo:
+    "images/old_photo.png"
+    zoom 0.55
+    xanchor 0.55
+    yanchor 0.55
+    xpos 1010
+    ypos 400
+
 image q1:
     "images/q1.png"
     zoom 0.55
@@ -110,21 +117,27 @@ image q5:
     xpos 1010
     ypos 400
 
-image q6:
-    "images/q6.png"
-    zoom 0.55
-    xanchor 0.55
-    yanchor 0.55
-    xpos 1010
-    ypos 400
-
-default trust = 0
-default keepsake = False
 default puzzle_score = 0
 default final_keyword = ""
 
-# ── 遊戲開始 ───────────────────────────────────────────────────────
+# ── 規則說明 ───────────────────────────────────────────────────────
 label start:
+
+    scene rule
+    with dissolve
+
+    n "遊玩前提醒"
+    n "1. 建議在重要決策前先行存檔，以免錯過關鍵劇情分支。"
+    n "2. 本作所有謎題皆有固定作答格式，請仔細閱讀題目說明。"
+    n "3. 部分線索可能藏在對話、場景與圖片細節中，請留意畫面資訊。"
+    n "4. 若忘記先前出現的提示，可使用快速選單中的「歷史」回顧內容。"
+    n "5. 本作包含多個分支與結局，玩家的選擇將影響故事的最終走向。"
+    n "遊戲即將開始，祝您有個美好的體驗！"
+
+    jump old_house_room
+
+# ── 遊戲開始 ───────────────────────────────────────────────────────
+label old_house_room:
 
     scene black
     with fade
@@ -141,6 +154,7 @@ label start:
     n "皮箱的皮面已經裂開，金屬扣環微微生鏽，像是很久很久以前，就沒有人再碰過它。"
 
     p "……這是什麼？"
+
     play sound "audio/zipper.ogg" 
 
     hide m1
@@ -184,11 +198,12 @@ label start:
         "沿著地圖去查個明白":
             jump post_office
         "先把信收好，等之後再說":
-            jump delay_bad_end
+            jump ending_box
 
 # ── 場景一 郵局 ───────────────────────────────────────────────────────
 label post_office:
-
+    scene black
+    with fade
     scene keelung_post_office
     show filter
     with dissolve
@@ -205,14 +220,14 @@ label post_office:
     show officer
     with dissolve
 
-    c "沒有完整資訊很難查。你先對一下這些資料。"
+    c "沒有完整資訊很難查，你先對一下這些資料。"
     n "對方把一張投遞清單推到你面前。上面是一串數字與分數般的標記，看上去像題目，也像祖父刻意留下的第一道門。"
 
     show q1
     play sound "audio/paper.ogg"
     with dissolve
 
-    n "你仔計看著投遞清單。那些數字排列得像藏著某種規律。"
+    n "你仔細看著投遞清單。那些數字排列得像藏著某種規律。"
     n "你開始意識到，這不只是單純的地址，而是祖父留下的第一把鑰匙。"
 
     # ── 謎題1 ──
@@ -236,7 +251,7 @@ label post_office:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     pass
-        $ user_input = renpy.input("請輸入答案（提示：觀察數字位置）：", length=20).strip()
+        $ user_input = renpy.input("請輸入5位數答案（提示：觀察數字位置）：", length=20).strip()
         if bridge.check_answer(0, user_input):
             $ _answered = True
             $ bridge.save_result(0, 0)
@@ -260,15 +275,18 @@ label post_office:
     c "以前有些沒有署名的信，最後也只能由撿到的人決定去留。"
     n "那句話讓你短暫愣住。祖父第一次拿到那封信，正是因為它混在舊家的信堆裡，後來帶來郵局退還，卻被告知自行處置。"
 
+    $ theBox = "gui/memo_textbox.png"
     scene old_post_office
     play music "audio/past.mp3" fadein 1.0
+    $ textbox_mode = "gray"
     hide m1
     hide officer
     hide keelung_post_office
     hide filter
     hide q1
     with dissolve
-
+    
+    
     l "第一次收到這封信，是從舊家的信件堆中撿到的。"
     l "那時候我原本只是想把雜亂的信件整理一下，沒想到，竟會在一疊舊紙裡看見它。"
     l "信封沒有署名，字跡也不算張揚，卻像是從很遠的地方，安靜地落在我手裡。"
@@ -281,6 +299,7 @@ label post_office:
     l "那字寫得很慢，卻很真。每一筆都像是經過想過、忍過，最後才寫下來。"
     l "我讀著讀著，竟一時忘了時間，只覺得若不去找出寫信的人，心裡總會留著一個缺口。"
 
+    $ theBox = "gui/textbox.png"
     scene keelung_post_office
     play music "audio/now.mp3" fadein 1.0
     show m1
@@ -340,7 +359,7 @@ label newspaper_site:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     pass
-        $ user_input = renpy.input("請輸入答案（提示：觀察紅書和粉書）：", length=20).strip()
+        $ user_input = renpy.input("請輸入答案（照1~6之順序拼出單字）：", length=20).strip()
         if bridge.check_answer(1, user_input):
             $ _answered = True
             $ bridge.save_result(1, 0)
@@ -364,6 +383,7 @@ label newspaper_site:
     n "而在港口時代裡，最重要的東西之一，就是燈塔（[user_input]）。"
     n "港邊的人靠它辨識方向，也靠它等一個可能永遠不會回來的人。"
 
+    $ theBox = "gui/memo_textbox.png"
     scene old_beach
     play music "audio/past.mp3" fadein 1.0
     hide filter
@@ -392,6 +412,7 @@ label newspaper_site:
     l "我沒有急著替這段關係下定義，只是默默記住每一次相見、每一次等待、每一次分別。"
     l "因為在那個年代裡，有些感情本就不容易被說出口，而越是不說，越會在心裡留下很久很久。"
 
+    $ theBox = "gui/textbox.png"
     scene bookshelfs
     play music "audio/now.mp3" fadein 1.0
     show filter
@@ -461,7 +482,7 @@ label lighthouse:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     pass
-        $ user_input = renpy.input("請輸入答案（提示：F=..-. G=--. R=.-.）：", length=20).strip()
+        $ user_input = renpy.input("請輸入答案（請用大寫回答本題）：", length=20).strip()
         if bridge.check_answer(2, user_input):
             $ _answered = True
             $ bridge.save_result(2, 0)
@@ -493,6 +514,7 @@ label lighthouse:
     g "你祖父年輕時似乎常在這裡等船靠岸。"
     g "而他等待的，不只是船。"
 
+    $ theBox = "gui/memo_textbox.png"
     show old_beacon
     play music "audio/past.mp3" fadein 1.0
     hide filter
@@ -515,6 +537,7 @@ label lighthouse:
     l "我站在原地，明明有很多話想說，最後卻只剩下沉默。"
     l "有些時候，人生就是這樣，差一步就能說出口，卻偏偏在那一步之前，被命運先攔了下來。"
 
+    $ theBox = "gui/textbox.png"
     scene black
     with dissolve
 
@@ -575,7 +598,7 @@ label battlement:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     pass
-        $ user_input = renpy.input("請輸入答案（提示：數數、肩並肩）：", length=20).strip()
+        $ user_input = renpy.input("請輸入答案（答案格式為__, ___）：", length=20).strip()
         if (bridge.check_answer(3, user_input) or bridge.check_answer(3, user_input.replace(" ", "").replace("，", ",").replace(",", ","))):
             $ _answered = True
             $ bridge.save_result(3, 0)
@@ -605,6 +628,7 @@ label battlement:
     n "祖父曾答應要來，卻沒有來。"
     n "信裡的故事，也在這裡停住。"
 
+    $ theBox = "gui/memo_textbox.png"
     show old_cannon
     play music "audio/past.mp3" fadein 1.0
     hide filter
@@ -625,6 +649,7 @@ label battlement:
     l "它沒有寄出去，也沒有被我再拿出來看過。"
     l "像是我替自己留下的一個沉默的證明，提醒我有些話，一旦錯過了時機，就只能跟著歲月一起封存。"
 
+    $ theBox = "gui/textbox.png"
     hide old_cannon
     show white_cannon_battlement
     play music "audio/now.mp3" fadein 1.0
@@ -686,7 +711,7 @@ label final_route:
                         n "目前還沒有更多提示了。"
                 "我再想想":
                     pass
-        $ user_input = renpy.input("請輸入答案（提示：顏色重組拼單字）：", length=20).strip()
+        $ user_input = renpy.input("請輸入答案（請用大寫回答本題）：", length=20).strip()
         if bridge.check_answer(4, user_input):
             $ _answered = True
             $ bridge.save_result(4, 0)
@@ -709,6 +734,29 @@ label final_route:
     n "終於，你發現那個最終線索不是普通店名，而是藏在記憶中的一個字：[user_input]。"
     n "你查到那人後來定居基隆，而他的後代，至今仍住在這片土地上。"
     n "你握緊信紙，知道自己還有最後一次機會。"
+
+    # 顯示最終分數
+    $ total = bridge.get_total_score()
+    n "你完成了所有謎題，總分：[total] 分。"
+
+    menu:
+        "解出此題後，請問你如何理解 CAFE？"
+        "是港邊老咖啡館，去海港附近找":
+            $ final_keyword = "harbor"
+        "是書店裡的咖啡角落，去太平青鳥書店":
+            $ final_keyword = "bookstore"
+        "是祖父以前常去的茶室，回老街找":
+            $ final_keyword = "teahouse"
+
+    if final_keyword == "bookstore":
+        jump final_bookstore
+    elif final_keyword == "harbor":
+        jump final_harbor
+    else:
+        jump final_teahouse
+
+# ── 擴充結局 ───────────────────────────────────────────────────────
+label final_bookstore:
 
     scene taiping_qingniao_bookstore
     show filter
@@ -733,6 +781,17 @@ label final_route:
     n "剛好店裡只有一位顧客，服務生把照片傳給那位客人看。"
 
     hide waiter
+
+    if total == 20:
+        jump ending_true_good
+    else:
+        jump ending_soft_good
+
+label ending_true_good:
+    play music "audio/good.mp3" fadein 1.0
+    scene taiping_qingniao_bookstore
+    show filter
+    show m1
     show grandson
     with dissolve
     
@@ -750,132 +809,21 @@ label final_route:
     n "那笑容裡沒有驚訝，只有某種終於被接上的理解。"
 
     s "原來……他一直沒有忘記。"
-
-    n "你把信交給他。"
-    n "這一次，沒有再錯過。"
-
-    # 顯示最終分數
-    $ total = bridge.get_total_score()
-    n "你完成了所有謎題，總分：[total] 分。"
-
-    menu:
-        "你如何理解 CAFE？"
-        "是書店裡的咖啡角落，去太平青鳥書店":
-            $ final_keyword = "bookstore"
-        "是港邊老咖啡館，去海港附近找":
-            $ final_keyword = "harbor"
-        "是祖父以前常去的茶室，回老街找":
-            $ final_keyword = "teahouse"
-
-    if final_keyword == "bookstore":
-        jump final_bookstore
-    elif final_keyword == "harbor":
-        jump final_harbor
-    else:
-        jump final_teahouse
-
-
-label good_end:
-
-    scene sunset_sea
-    play music "audio/good.mp3" fadein 1.0
-    show m1
-    with dissolve
-
-    n "好結局。"
-    n "祖父沒有說完的話，終於被傳到了該去的人手上。"
-    n "你站在海邊，看著夕陽把整片天空染成溫柔的橘紅色，第一次覺得，錯過不是結束，傳達才是。"
-
-    return
-
-
-label delay_bad_end:
-    play music "audio/bad.mp3" fadein 1.0
-    scene empty_station
-    with dissolve
-
-    n "你猶豫了。"
-    n "你告訴自己，等一下再去也沒關係。"
-    n "可是有些事，一旦晚了，就不會再等人。"
-
-    n "當你終於再回到線索所在的地方時，店已經停業了。"
-    n "人不在，照片不在，唯一留下的只有風。"
-
-    n "你手裡還握著那封信，卻再也找不到能親手接住它的人。"
-
-    n "壞結局。"
-    n "你解開了謎題，卻錯過了真正重要的相遇。"
-
-    menu:
-        "要重新開始嗎？"
-        "重新開始":
-            jump start
-        "結束遊戲":
-            return
-
-
-# ── 擴充結局 ───────────────────────────────────────────────────────
-
-label final_bookstore:
-    scene taiping_qingniao_bookstore
-    with dissolve
-
-    n "你來到太平青鳥書店。推門時風鈴輕響，書香與木頭味混著淡淡咖啡香，安靜得像任何一句真話都能在這裡被好好接住。"
-    if keepsake:
-        n "你把那張舊照片一起帶來了。某種直覺告訴你，今天也許不只是一封信的終點。"
-    k "歡迎。請問需要幫忙嗎？"
-    p "我在找……一個和很久以前的基隆有關的人。"
-    n "櫃檯後的男子抬起頭，起初只覺得你問得奇怪。直到你把照片遞過去，他的眼神忽然停住。"
-
-    if keepsake:
-        s "這張照片……我家牆上也有一張。"
-        $ trust += 2
-    else:
-        s "這封信上的名字，我好像聽祖父提過。"
-        $ trust += 1
-
-    n "你把整個故事慢慢說完，把那封未寄出的信交到他手中。男子沉默了很久，最後露出一個像是終於明白什麼的笑。" 
-
-    if puzzle_score >= 4 and trust >= 4:
-        jump ending_true_good
-    else:
-        jump ending_soft_good
-
-label final_harbor:
-    scene old_harbor_cafe
-    with dissolve
-    n "你去了港邊一間老咖啡館。窗邊能看見船影，桌椅老舊，牆上掛著泛黃船照。這裡很像故事會停留的地方，卻沒有任何人認得你手上的名字。"
-    n "店主聽完後只說，這附近以前的確有很多等船的人，但太久了，太多人都散了。"
-    if trust >= 3:
-        n "臨走前，店主忽然想起有人也許知道更多，提到山上的書店曾收過不少地方口述資料。你意識到自己差一點走錯方向。"
-        menu:
-            "要不要立刻改去書店？"
-            "去，還來得及":
-                jump final_bookstore
-            "不了，今天就到這裡":
-                jump ending_missed
-    else:
-        jump ending_missed
-
-label final_teahouse:
-    scene old_street_teahouse
-    with dissolve
-    n "你回到老街尋找祖父可能去過的茶室。舊街潮濕、招牌斑駁，午後的光照不進狹窄騎樓。你找到一間還在營業的老店，卻只在角落裡看見與祖父相似的時代殘影。"
-    n "你把信攤在桌上，看著茶湯表面慢慢晃動，忽然明白自己追到的只是祖父熟悉的地方，不是那封信真正要去的地方。"
-    jump ending_wrong_place
-
-label ending_true_good:
-    play music "audio/good.mp3" fadein 1.0
-    scene sunset_sea
-    with dissolve
-
-    n "男子把信接過去時，手指明顯停了一下，像是連他自己也沒有想到，這封信竟會隔著這麼多年，仍然來到他的面前。"
-    n "他低頭看完信，眼眶微微泛紅，卻始終沒有落淚，只是在沉默很久之後，輕聲說道：『原來……他一直沒有忘記。』"
     n "那一刻，你忽然覺得，祖父藏了一生、沒能親手送出的心意，終於在你手上，真正抵達了該去的地方。"
 
-    n "男子轉身回到書架後方，過了一會兒，拿出一張已經有些泛黃的舊照片。"
+    n "男子從包裡拿出筆記本翻找，過了一會兒，遞出一張已經有些泛黃的舊照片。"
+
+    show old_photo
+    with dissolve
+    
     n "照片裡的兩個人，站在港邊，隔著歲月仍能看見年輕時不敢說破的情意。"
     n "你知道，這不只是你替祖父完成了一次傳達，也是兩段被時間分開的記憶，終於在今日重新接上。"
+
+    scene sunset_sea
+    hide taiping_qingniao_bookstore
+    hide grandson
+    show m1
+    with dissolve
 
     n "離開書店時，天色正好。山城的風從街口慢慢吹下來，帶著一點海的氣味。"
     n "你回頭望向遠處的港口，忽然明白，有些故事不是為了被改寫，而是為了在多年以後，仍能被好好理解。"
@@ -885,8 +833,11 @@ label ending_true_good:
     return
 
 label ending_soft_good:
-    scene taiping_qingniao_bookstore
     play music "audio/good.mp3" fadein 1.0
+    scene taiping_qingniao_bookstore
+    show filter
+    show m1
+    show grandson
     with dissolve
 
     n "你還是把信送到了正確的人手上。"
@@ -895,6 +846,12 @@ label ending_soft_good:
     n "他沒有立刻把話說得很滿，只是將信小心收好，低聲說自己會回去把家裡那張舊照片找出來。"
     n "你知道，雖然你沒有拼齊所有細節，沒能把祖父和那人之間的每一段經過都完整說清，但至少這封信，終究沒有再被埋進沉默裡。"
 
+    scene sunset_sea
+    hide taiping_qingniao_bookstore
+    hide grandson
+    show m1
+    with dissolve
+
     n "走出書店時，天色已經有些暗了。玻璃門映著街燈，也映著你手裡空下來的位置。"
     n "你忽然覺得，也許有些故事不必知道全部，才能被溫柔地保存。"
     n "只要它終究被送到了願意接住的人手裡，那份遲來的回音，就已經足夠。"
@@ -902,9 +859,34 @@ label ending_soft_good:
 
     return
 
+label final_harbor:
+    scene old_harbor_cafe
+    with dissolve
+    n "你去了港邊一間老咖啡館。窗邊能看見船影，桌椅老舊，牆上掛著泛黃船照。這裡很像故事會停留的地方，卻沒有任何人認得你手上的名字。"
+    n "店主聽完後只說，這附近以前的確有很多等船的人，但太久了，太多人都散了。"
+    n "臨走前，店主忽然想起有人也許知道更多，提到山上的書店曾收過不少地方口述資料。你意識到自己差一點走錯方向。"
+    menu:
+        "要不要立刻改去書店？"
+        "去，還來得及":
+            jump final_bookstore
+        "不了，今天就到這裡":
+            jump ending_missed
+
+label final_teahouse:
+    scene old_street_teahouse
+    show m1
+    with dissolve
+    n "你回到老街尋找祖父可能去過的茶室。"
+    n "舊街潮濕、招牌斑駁，午後的光照不進狹窄騎樓。"
+    n "你找到一間還在營業的老店，卻只在角落裡看見與祖父相似的時代殘影。"
+    n "你把信攤在桌上，看著茶湯表面慢慢晃動，忽然明白自己追到的只是祖父熟悉的地方，不是那封信真正要去的地方。"
+    jump ending_wrong_place
+
 label ending_missed:
     play music "audio/bad.mp3" fadein 1.0
     scene harbor_evening
+    show filter
+    show m1
     with dissolve
     
     n "你離開港邊時，海風很大，吹得外套下襬不住晃動。"
@@ -921,7 +903,7 @@ label ending_missed:
     menu:
         "要重新開始嗎？"
         "重新開始":
-            jump start
+            jump old_house_room
         "結束遊戲":
             return
 
@@ -929,6 +911,7 @@ label ending_missed:
 label ending_wrong_place:
     play music "audio/bad.mp3" fadein 1.0
     scene empty_teacup
+    show m1
     with dissolve
 
     n "你到了那間充滿回憶的老茶室。"
@@ -947,37 +930,41 @@ label ending_wrong_place:
     menu:
         "要重新開始嗎？"
         "重新開始":
-            jump start
+            jump old_house_room
         "結束遊戲":
             return
 
-
-label ending_half_truth:
+label delay_bad_end:
     play music "audio/bad.mp3" fadein 1.0
-    scene home_night
+    scene empty_station
     with dissolve
 
     n "你已經知道祖父曾錯過一場重要的赴約，也知道那封信為什麼沒有寄出。"
     n "白米甕砲台上的風、燈塔邊的等待、港邊沒能說出口的情意，到了這裡，似乎已經足夠拼湊成一個完整的遺憾。"
 
-    n "可是你沒有再繼續走下去。"
-    n "你沒有去確認那人後來的人生，也沒有找到那封信最後該交給誰。"
-    n "於是這段故事對你而言，永遠只停在『差一點知道全部』的地方。"
+    n "你猶豫了。"
+    n "你告訴自己，等一下再去也沒關係。"
+    n "可是有些事，一旦晚了，就不會再等人。"
 
-    n "夜裡，你把信重新收回桌上，房間安靜得只剩翻頁聲。"
-    n "你明白，有些真相不是不存在，而是需要有人願意再往前一步。"
-    n "而這一次，你停住了。"
-    n "結局【停在這裡】。"
+    n "當你終於再回到線索所在的地方時，店已經停業了。"
+    n "人不在，照片不在，唯一留下的只有風。"
+
+    n "你手裡還握著那封信，卻再也找不到能親手接住它的人。"
+
+    n "你解開了謎題，卻錯過了真正重要的相遇。"
+    n "壞結局【來不及】"
 
     menu:
         "要重新開始嗎？"
         "重新開始":
-            jump start
+            jump old_house_room
         "結束遊戲":
             return
 
-
 label ending_box:
+    scene black
+    with fade
+
     play music "audio/bad.mp3" fadein 1.0
     scene old_house_room
     with dissolve
@@ -995,6 +982,6 @@ label ending_box:
     menu:
         "要重新開始嗎？"
         "重新開始":
-            jump start
+            jump old_house_room
         "結束遊戲":
             return

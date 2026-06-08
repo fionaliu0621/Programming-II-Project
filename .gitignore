@@ -9,3 +9,5 @@ data/save.bin
 # Ignore log and debug files
 errors.txt
 traceback.txt
+*.o
+libtcth_core.*
