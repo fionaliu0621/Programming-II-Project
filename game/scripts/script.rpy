@@ -1,4 +1,4 @@
-﻿# 遊戲腳本位於此檔案。
+# 遊戲腳本位於此檔案。
 
 # ── 初始化 bridge ──────────────────────────────────────────────────
 init python:
@@ -233,24 +233,9 @@ label post_office:
     # ── 謎題1 ──
     $ bridge.start_timer(0)
     $ _hint_index = 0
-    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
-        $ _elapsed = bridge.get_elapsed(0)
-        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
-            $ _show_hint_prompt = True
-            menu:
-                "已經一分鐘了，需要提示嗎？"
-                "給我提示":
-                    $ _hint = bridge.get_hint(0, 999, _hint_index)
-                    if _hint:
-                        n "[_hint]"
-                        $ _hint_index = _hint_index + 1
-                    else:
-                        n "目前還沒有更多提示了。"
-                "我再想想":
-                    pass
         $ user_input = renpy.input("請輸入5位數答案（提示：觀察數字位置）：", length=20).strip()
         if bridge.check_answer(0, user_input):
             $ _answered = True
@@ -267,7 +252,7 @@ label post_office:
                     else:
                         n "目前還沒有更多提示了。"
                 "我再想想":
-                    $ _show_hint_prompt = False
+                    pass
     
     play sound "audio/success.ogg"
             
@@ -341,24 +326,9 @@ label newspaper_site:
     # ── 謎題2 ──
     $ bridge.start_timer(1)
     $ _hint_index = 0
-    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
-        $ _elapsed = bridge.get_elapsed(1)
-        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
-            $ _show_hint_prompt = True
-            menu:
-                "已經一分鐘了，需要提示嗎？"
-                "給我提示":
-                    $ _hint = bridge.get_hint(1, 999, _hint_index)
-                    if _hint:
-                        n "[_hint]"
-                        $ _hint_index = _hint_index + 1
-                    else:
-                        n "目前還沒有更多提示了。"
-                "我再想想":
-                    pass
         $ user_input = renpy.input("請輸入答案（照1~6之順序拼出單字）：", length=20).strip()
         if bridge.check_answer(1, user_input):
             $ _answered = True
@@ -375,7 +345,7 @@ label newspaper_site:
                     else:
                         n "目前還沒有更多提示了。"
                 "我再想想":
-                    $ _show_hint_prompt = False
+                    pass
     
     play sound "audio/success.ogg"
              
@@ -464,25 +434,10 @@ label lighthouse:
     # ── 謎題3 ──
     $ bridge.start_timer(2)
     $ _hint_index = 0
-    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
-        $ _elapsed = bridge.get_elapsed(2)
-        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
-            $ _show_hint_prompt = True
-            menu:
-                "已經一分鐘了，需要提示嗎？"
-                "給我提示":
-                    $ _hint = bridge.get_hint(2, 999, _hint_index)
-                    if _hint:
-                        n "[_hint]"
-                        $ _hint_index = _hint_index + 1
-                    else:
-                        n "目前還沒有更多提示了。"
-                "我再想想":
-                    pass
-        $ user_input = renpy.input("請輸入答案（請用大寫回答本題）：", length=20).strip()
+        $ user_input = renpy.input("請輸入答案（請輸入英文）：", length=20).strip()
         if bridge.check_answer(2, user_input):
             $ _answered = True
             $ bridge.save_result(2, 0)
@@ -498,7 +453,7 @@ label lighthouse:
                     else:
                         n "目前還沒有更多提示了。"
                 "我再想想":
-                    $ _show_hint_prompt = False 
+                    pass
             
     play sound "audio/success.ogg"
             
@@ -580,24 +535,9 @@ label battlement:
     # ── 謎題4 ──
     $ bridge.start_timer(3)
     $ _hint_index = 0
-    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
-        $ _elapsed = bridge.get_elapsed(3)
-        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
-            $ _show_hint_prompt = True
-            menu:
-                "已經一分鐘了，需要提示嗎？"
-                "給我提示":
-                    $ _hint = bridge.get_hint(3, 999, _hint_index)
-                    if _hint:
-                        n "[_hint]"
-                        $ _hint_index = _hint_index + 1
-                    else:
-                        n "目前還沒有更多提示了。"
-                "我再想想":
-                    pass
         $ user_input = renpy.input("請輸入答案（答案格式為__, ___）：", length=20).strip()
         if (bridge.check_answer(3, user_input) or bridge.check_answer(3, user_input.replace(" ", "").replace("，", ",").replace(",", ","))):
             $ _answered = True
@@ -614,7 +554,7 @@ label battlement:
                     else:
                         n "目前還沒有更多提示了。"
                 "我再想想":
-                    $ _show_hint_prompt = False
+                    pass
             
     play sound "audio/success.ogg"
             
@@ -693,25 +633,10 @@ label final_route:
     # ── 謎題5 ──
     $ bridge.start_timer(4)
     $ _hint_index = 0
-    $ _show_hint_prompt = False
     $ user_input = ""
     $ _answered = False
     while not _answered:
-        $ _elapsed = bridge.get_elapsed(4)
-        if _elapsed >= 60 and not _show_hint_prompt and _hint_index <= 2:
-            $ _show_hint_prompt = True
-            menu:
-                "已經一分鐘了，需要提示嗎？"
-                "給我提示":
-                    $ _hint = bridge.get_hint(4, 999, _hint_index)
-                    if _hint:
-                        n "[_hint]"
-                        $ _hint_index = _hint_index + 1
-                    else:
-                        n "目前還沒有更多提示了。"
-                "我再想想":
-                    pass
-        $ user_input = renpy.input("請輸入答案（請用大寫回答本題）：", length=20).strip()
+        $ user_input = renpy.input("請輸入答案（請輸入英文）：", length=20).strip()
         if bridge.check_answer(4, user_input):
             $ _answered = True
             $ bridge.save_result(4, 0)
@@ -727,7 +652,7 @@ label final_route:
                     else:
                         n "目前還沒有更多提示了。"
                 "我再想想":
-                    $ _show_hint_prompt = False
+                    pass
             
     play sound "audio/success.ogg"
             
